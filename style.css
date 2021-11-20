@@ -1,0 +1,47 @@
+body{
+    background-color: #e8e9e0;
+}
+.container{
+    max-width: 360px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    border: 1px solid green;
+    padding: 5px;
+}
+
+img{
+    height: 20px;
+    cursor: pointer;
+}
+
+.input-item{
+    border-radius: 2px;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+button{
+    padding: 5px;
+    background-color: blanchedalmond;
+    border-radius: 5px;
+}
+
+ul{
+    padding: 2px;
+}
+
+li{
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 2px;
+    word-break: break-word;
+}
+
+.img-group{
+    display: flex;
+}
+
+.list-category{
+    display: flex;
+    justify-content: space-between;
+}
