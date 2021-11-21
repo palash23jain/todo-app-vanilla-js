@@ -3,7 +3,7 @@ body{
 }
 .container{
     max-width: 360px;
-    margin: 0 auto;
+    margin: 50px auto;
     box-sizing: border-box;
     border: 1px solid green;
     padding: 5px;
@@ -44,4 +44,16 @@ li{
 .list-category{
     display: flex;
     justify-content: space-between;
+}
+
+a{
+    cursor: pointer;
+}
+
+#all{
+    color: blue;
+}
+
+header{
+    text-align: center;
 }

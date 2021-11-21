@@ -7,12 +7,39 @@ const localStorageArr = [];
 let editTempId;
 
 if(localStorage.getItem('itemTodo')){
-    JSON.parse(localStorage.getItem('itemTodo')).forEach(i=>{
-        ul.innerHTML = ul.innerHTML + `<li id="${i.id}">${i.item}<span class="img-group"><img src="check.svg" class="check"><img src="edit.svg" class="edit"><img src="cross.svg" class="cross"></span></li>`;
-        localStorageArr.push(i);
-    })
+        JSON.parse(localStorage.getItem('itemTodo')).forEach(i=>{
+            ul.innerHTML = ul.innerHTML + `<li id="${i.id}">${i.item}<span class="img-group"><img src="check.svg" class="check"><img src="edit.svg" class="edit"><img src="cross.svg" class="cross"></span></li>`;
+            if(i.status === "complete"){
+                document.querySelector(`#${CSS.escape(i.id)}`).style.textDecoration = "line-through";
+            }
+            localStorageArr.push(i);
+        })
 }
 
+const displayItemOnStatus = status => {
+    ul.innerHTML= '';
+    localStorageArr.forEach(i=>{
+        if(status === "all" && (i.status ==="active" || i.status === "complete")){
+            ul.innerHTML = ul.innerHTML + `<li id="${i.id}">${i.item}<span class="img-group"><img src="check.svg" class="check"><img src="edit.svg" class="edit"><img src="cross.svg" class="cross"></span></li>`;
+           if(status==="complete") {
+               document.querySelector(`#${CSS.escape(i.id)}`).style.textDecoration = "line-through";
+            }
+            document.getElementById('all').style.color = "blue";
+            document.getElementById('active').style.color = document.getElementById('complete').style.color = "black";
+        }
+        if(status === "active" && i.status ==="active"){
+            ul.innerHTML = ul.innerHTML + `<li id="${i.id}">${i.item}<span class="img-group"><img src="check.svg" class="check"><img src="edit.svg" class="edit"><img src="cross.svg" class="cross"></span></li>`;
+            document.getElementById('active').style.color = "blue";
+            document.getElementById('all').style.color = document.getElementById('complete').style.color = "black";
+        }
+        if(status === "complete" && i.status ==="complete"){
+            ul.innerHTML = ul.innerHTML + `<li id="${i.id}">${i.item}<span class="img-group"><img src="check.svg" class="check"><img src="edit.svg" class="edit"><img src="cross.svg" class="cross"></span></li>`;
+            document.querySelector(`#${CSS.escape(i.id)}`).style.textDecoration = "line-through";
+            document.getElementById('complete').style.color = "blue";
+            document.getElementById('active').style.color = document.getElementById('all').style.color = "black";
+        }
+    })
+}
 const create_UUID = () => {
     let dt = new Date().getTime();
     let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -40,9 +67,7 @@ const setTodoItemLocalStorage = () => {
 const crossImgClick = (e) => {
     localStorageArr.forEach((i, index)=>{
         if(i.id === e.target.parentNode.parentNode.id){
-            localStorageArr[index].status = 'delete';
-            const d = new Date();
-            localStorageArr[index].date = `${d.toLocaleString('en-US', {timeZone:"Asia/Kolkata"})}`
+            localStorageArr.splice(index, 1);
         }
     })
     e.target.parentNode.parentNode.remove();
@@ -58,6 +83,11 @@ const checkImgClick = (e) => {
             }
         })
         e.target.parentNode.parentNode.style.textDecoration = "line-through"
+        document.querySelectorAll("a").forEach(i=>{
+            if(i.style.color === 'blue'){
+                displayItemOnStatus(i.id);
+            }
+        })
     } else{
         localStorageArr.forEach((i, index)=> {
             if(i.id === e.target.parentNode.parentNode.id){
@@ -134,8 +164,8 @@ document.body.addEventListener('click', (e)=>{
     if(e.target.className === "btn-edit-item"){
         editBtnClick(e);
     }
-    if(e.target.id === "all"){
-        
+    if(e.target.id === "all" || e.target.id === "active" || e.target.id === "complete"){
+        displayItemOnStatus(e.target.id);
     }
     setTodoItemLocalStorage();
 })
