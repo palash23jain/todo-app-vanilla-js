@@ -21,7 +21,7 @@ const displayItemOnStatus = status => {
     localStorageArr.forEach(i=>{
         if(status === "all" && (i.status ==="active" || i.status === "complete")){
             ul.innerHTML = ul.innerHTML + `<li id="${i.id}">${i.item}<span class="img-group"><img src="check.svg" class="check"><img src="edit.svg" class="edit"><img src="cross.svg" class="cross"></span></li>`;
-           if(status==="complete") {
+           if(i.status==="complete") {
                document.querySelector(`#${CSS.escape(i.id)}`).style.textDecoration = "line-through";
             }
             document.getElementById('all').style.color = "blue";
@@ -155,7 +155,7 @@ document.body.addEventListener('click', (e)=>{
         checkImgClick(e);
     }
     if(e.target.className === 'btn-add-item'){
-        addClick();
+        addClick();  
     }
     if(e.target.className === "btn-clear-all"){
             ul.innerHTML = '';
@@ -168,11 +168,21 @@ document.body.addEventListener('click', (e)=>{
         displayItemOnStatus(e.target.id);
     }
     setTodoItemLocalStorage();
+    document.querySelectorAll("a").forEach(i=>{
+        if(i.style.color === 'blue'){
+            displayItemOnStatus(i.id);
+        }
+    })
 })
 
 inputItem.addEventListener('keyup', e=>{
     if(e.keyCode ===13 && inputItem.value){
         inputEnter(e);
         setTodoItemLocalStorage();
+        document.querySelectorAll("a").forEach(i=>{
+            if(i.style.color === 'blue'){
+                displayItemOnStatus(i.id);
+            }
+        })
     }
 })
